@@ -1,0 +1,28 @@
+services:
+    php:
+        container_name: app_php
+        build:
+            context: .
+            dockerfile: ./docker/php/Dockerfile
+            target: local
+        environment:
+            PHP_IDE_CONFIG: '${PHP_IDE_CONFIG:-serverName=importer}'
+        volumes:
+            - ./app:/var/www
+
+    db:
+        image: mysql:8
+        platform: linux/amd64
+        container_name: app_db
+        environment:
+            MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+            MYSQL_DATABASE: import_db
+            MYSQL_USER: mysql
+            MYSQL_PASSWORD: mysql
+        ports:
+            - "3306:3306"
+        volumes:
+            - mysql:/var/lib/mysql:delegated
+
+volumes:
+    mysql:

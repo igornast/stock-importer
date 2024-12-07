@@ -1,0 +1,19 @@
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                          https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <entity name="App\Infrastructure\Doctrine\Entity\ProductData" table="tblProductData">
+
+        <id name="productDataId" column="intProductDataId" type="integer" length="10">
+            <generator strategy="AUTO"/>
+        </id>
+
+        <field name="productName" column="strProductName" length="50"/>
+        <field name="productDescription" column="strProductDesc" length="255"/>
+        <field name="productCode" column="strProductCode" length="10" unique="true"/>
+
+        <field name="dateAdded" column="dtmAdded" type="datetime_immutable"/>
+        <field name="dateDiscontinued" column="dtmDiscontinued" type="datetime_immutable" nullable="true" />
+    </entity>
+</doctrine-mapping>
