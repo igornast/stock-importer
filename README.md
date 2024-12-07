@@ -71,7 +71,7 @@ The Infrastructure layer is responsible for implementing technical details such 
  * **Entities**: Represent database structures, such as ProductData.
  * **Repositories**: Implement domain-defined repository interfaces (ProductRepository).
 
-## Shared Layer
+### Shared Layer
 The Shared layer provides reusable components that can be used across multiple layers for communication and interoperability.
  * **DTOs** (Data Transfer Objects): Facilitate data transfer between layers (ProductDTO, ImportResultDTO).
 
