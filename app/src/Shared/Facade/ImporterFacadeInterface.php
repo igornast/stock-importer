@@ -12,4 +12,9 @@ interface ImporterFacadeInterface
      * @param array<int, array<string, string>> $products
      */
     public function importProducts(array $products): ImportResultDTO;
+
+    /**
+     * @param array<int, array<string, string>> $products
+     */
+    public function dryRunImportProducts(array $products): ImportResultDTO;
 }

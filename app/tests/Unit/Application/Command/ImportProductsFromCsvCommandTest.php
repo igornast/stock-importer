@@ -39,6 +39,9 @@ it('imports products', function () {
         );
 
     $this->importerFacade
+        ->shouldNotReceive('dryRunImportProducts');
+
+    $this->importerFacade
         ->shouldReceive('importProducts')
         ->andReturn(
             new ImportResultDTO(2, 2, []),
@@ -51,7 +54,7 @@ it('imports products', function () {
     expect($commandTester->getStatusCode())->toBe(0)
         ->and($commandTester->getDisplay())
         ->toContain('Processed items: 3')
-        ->toContain('Successfuly imported: 3')
+        ->toContain('Successfully imported: 3')
         ->toContain('Failed to import: 0')
         ->not->toContain('Invalid Rows');
 });
@@ -88,7 +91,47 @@ it('handles invalid products', function () {
     expect($commandTester->getStatusCode())->toBe(0)
         ->and($commandTester->getDisplay())
         ->toContain('Processed items: 2')
-        ->toContain('Successfuly imported: 1')
+        ->toContain('Successfully imported: 1')
         ->toContain('Failed to import: 1')
         ->toContain('Invalid Rows');
+});
+
+it('handles dry run import', function () {
+    $filePath = '/path/test.csv';
+    $this->productsReader
+        ->shouldReceive('read')
+        ->with($filePath)
+        ->andReturnUsing(
+            function () {
+                $data = [
+                    ['Product Code' => 'P001', 'Product Name' => 'TV', 'Product Description' => '32" TV', 'Discontinued' => ''],
+                    ['Product Code' => 'P002', 'Product Name' => 'Radio', 'Product Description' => 'Portable Radio', 'Discontinued' => 'yes'],
+                    ['Product Code' => 'P003', 'Product Name' => 'Computer', 'Product Description' => 'PC', 'Discontinued' => ''],
+                ];
+
+                foreach ($data as $item) {
+                    yield $item;
+                }
+            }
+        );
+
+    $this->importerFacade
+        ->shouldNotReceive('importProducts');
+
+    $this->importerFacade
+        ->shouldReceive('dryRunImportProducts')
+        ->andReturn(
+            new ImportResultDTO(2, 2, []),
+            new ImportResultDTO(1, 1, [])
+        );
+
+    $commandTester = new CommandTester($this->command);
+    $commandTester->execute(['file' => $filePath, '--batch-size' => 2, '--dry-run' => true]);
+
+    expect($commandTester->getStatusCode())->toBe(0)
+        ->and($commandTester->getDisplay())
+        ->toContain('Processed items: 3')
+        ->toContain('Successfully imported: 3')
+        ->toContain('Failed to import: 0')
+        ->not->toContain('Invalid Rows');
 });

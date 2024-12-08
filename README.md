@@ -1,7 +1,10 @@
 # Product Importer Project
 
-## Overview
-This project provides a command-line utility for importing product data from a CSV file. 
+## Project Overview
+This project implements a modular system for importing and validating product data from CSV files. 
+The architecture follows the principles of Hexagonal Architecture (Ports and Adapters), ensuring clear separation of concerns, flexibility, and testability.
+
+The project provides a command-line utility for importing product data from a CSV file. 
 The tool includes features such as data validation, batch processing, and detailed error reporting. 
 It is designed to handle large CSV files efficiently, ensuring seamless integration into the database.
 
@@ -10,6 +13,7 @@ It is designed to handle large CSV files efficiently, ensuring seamless integrat
 * Validation: Ensures required fields are present and properly formatted.
 * Batch Processing: Handles large data imports in configurable batch sizes.
 * Error Reporting: Outputs detailed information for rows that fail validation.
+* Dry-Run Mode: Allows you to test the import process without committing changes to the database.
 
 
 ## Commands
@@ -17,12 +21,13 @@ It is designed to handle large CSV files efficiently, ensuring seamless integrat
 To run the product import process, use the following command:
 
 ```shell
-php bin/console products:import --batch-size=20 ./tests/_sample/stock_schema.csv
+php bin/console products:import --batch-size=20 ./tests/_sample/stock_schema.csv --dry-run
 ````
 Arguments
 * `path/to/products.csv`: Path to the CSV file to be imported. 
 Options
-* `--batch-size`: (Optional) Defines the number of records processed per batch. Default is 25.
+* `--batch-size`: Defines the number of records processed per batch. Default is 25.
+* `--dry-run`: Run the command in dry mode to simulate the import without modifying the database.
 
 ## File Requirements
 * CSV file must be UTF-8 encoded.

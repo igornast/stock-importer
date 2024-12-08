@@ -34,6 +34,12 @@ class ImportProductsFromCsvCommand extends Command
             'Number of batch size to import',
             25,
         );
+        $this->addOption(
+            'dry-run',
+            'd',
+            InputOption::VALUE_NONE,
+            'Run the command in a dry-run mode',
+        );
         $this->addArgument(
             'file',
             InputOption::VALUE_REQUIRED,
@@ -43,9 +49,16 @@ class ImportProductsFromCsvCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $isDryRun = (bool) $input->getOption('dry-run');
         $batchSize = (int) $input->getOption('batch-size');
         /** @var string $filePath */
         $filePath = $input->getArgument('file');
+
+        if ($isDryRun) {
+            $output->writeln('<info>[Dry Run Mode]</info>');
+            $output->writeln('===============================');
+            $output->writeln('');
+        }
 
         $i = 1;
         $batch = 0;
@@ -56,7 +69,7 @@ class ImportProductsFromCsvCommand extends Command
             $productsData[] = $productData;
 
             if (0 === $i % $batchSize) {
-                $importResult = $this->handle($productsData, $importResult, $batch, $batchSize);
+                $importResult = $this->handle($productsData, $importResult, $batch, $batchSize, $isDryRun);
 
                 $productsData = [];
                 ++$batch;
@@ -66,11 +79,11 @@ class ImportProductsFromCsvCommand extends Command
         }
 
         if (count($productsData) > 0) {
-            $importResult = $this->handle($productsData, $importResult, $batch, $batchSize);
+            $importResult = $this->handle($productsData, $importResult, $batch, $batchSize, $isDryRun);
         }
 
         $output->writeln(sprintf('<comment>Processed items: %s</comment>', $importResult->processedCount));
-        $output->writeln(sprintf('<info>Successfuly imported: %s</info>', $importResult->successfulCount));
+        $output->writeln(sprintf('<info>Successfully imported: %s</info>', $importResult->successfulCount));
         $output->writeln(sprintf('<error>Failed to import: %s</error>', count($importResult->failed)));
 
         $this->printErrors($importResult, $output);
@@ -82,26 +95,26 @@ class ImportProductsFromCsvCommand extends Command
     /**
      * @param array<int, array<string, string>> $productsData
      */
-    private function handle(array $productsData, ImportResultDTO $importResult, int $batch, int $batchSize): ImportResultDTO
+    private function handle(array $productsData, ImportResultDTO $importResult, int $batch, int $batchSize, bool $isDryRun): ImportResultDTO
     {
+        if ($isDryRun) {
+            $result = $this->importerFacade->dryRunImportProducts($productsData);
+
+            return $this->handleImportResult($importResult, $result, $batch, $batchSize);
+        }
+
         $result = $this->importerFacade->importProducts($productsData);
 
-        return ImportResultDTO::fromSelf(
-            $importResult,
-            $result->processedCount,
-            $result->successfulCount,
-            $result->failed,
-            $batch,
-            $batchSize,
-        );
+        return $this->handleImportResult($importResult, $result, $batch, $batchSize);
     }
 
-    public function printErrors(ImportResultDTO $importResult, OutputInterface $output): void
+    private function printErrors(ImportResultDTO $importResult, OutputInterface $output): void
     {
         if (0 === count($importResult->failed)) {
             return;
         }
 
+        $output->writeln('');
         $table = new Table($output);
         $table
             ->setHeaderTitle('Invalid Rows')
@@ -115,5 +128,17 @@ class ImportProductsFromCsvCommand extends Command
             );
 
         $table->render();
+    }
+
+    private function handleImportResult(ImportResultDTO $importResult, ImportResultDTO $result, int $batch, int $batchSize): ImportResultDTO
+    {
+        return ImportResultDTO::fromSelf(
+            $importResult,
+            $result->processedCount,
+            $result->successfulCount,
+            $result->failed,
+            $batch,
+            $batchSize,
+        );
     }
 }
