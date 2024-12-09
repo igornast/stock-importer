@@ -6,10 +6,17 @@ namespace App\Application\Service\Products;
 
 class CsvProductsReader implements ProductsReaderInterface
 {
-    public const array SUPPORTED_HEADERS = ['Product Code', 'Product Name', 'Product Description', 'Discontinued'];
+    public const array SUPPORTED_HEADERS = [
+        'Product Code',
+        'Product Name',
+        'Product Description',
+        'Discontinued',
+        'Stock',
+        'Cost in GBP',
+    ];
 
     /**
-     * @return \Generator<array<int, array<string, string>>>
+     * @return \Generator<array<string, string>>
      */
     public function read(string $filePath): \Generator
     {
@@ -22,7 +29,7 @@ class CsvProductsReader implements ProductsReaderInterface
             $headers = fgetcsv($resource);
 
             while (($row = fgetcsv($resource)) !== false) {
-                yield array_combine($headers, $row);
+                yield array_combine($headers, $this->adjustRowDataIfNeeded($row, $headers));
             }
 
         } finally {
@@ -60,5 +67,27 @@ class CsvProductsReader implements ProductsReaderInterface
         if (count($errors) > 0) {
             throw new \RuntimeException('File errors detected: '.join(', ', $errors));
         }
+    }
+
+    /**
+     * @param array<string, string> $row
+     * @param array<int, string>    $headers
+     *
+     * @return array<int, string>
+     */
+    public function adjustRowDataIfNeeded(array $row, array $headers): array
+    {
+        $expectedCount = count($headers);
+        $rowCount = count($row);
+
+        if ($rowCount < $expectedCount) {
+            $row = array_pad($row, count($headers), '');
+        }
+
+        if ($rowCount > $expectedCount) {
+            $row = array_slice($row, 0, count($headers));
+        }
+
+        return $row;
     }
 }

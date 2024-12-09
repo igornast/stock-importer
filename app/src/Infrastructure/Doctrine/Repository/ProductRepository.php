@@ -27,7 +27,9 @@ class ProductRepository extends ServiceEntityRepository implements ProductReposi
         if ($productData instanceof ProductData) {
             $productData
                 ->setProductName($productDTO->name)
-                ->setProductDescription($productDTO->description);
+                ->setProductDescription($productDTO->description)
+                ->setProductPrice($productDTO->price)
+                ->setProductStock($productDTO->stock);
 
             if (null === $productData->dateDiscontinued && null !== $productDTO->discontinuedAt) {
                 $productData->setDateDiscontinued($productDTO->discontinuedAt);
@@ -42,6 +44,8 @@ class ProductRepository extends ServiceEntityRepository implements ProductReposi
             productName: $productDTO->name,
             productDescription: $productDTO->description,
             productCode: $productDTO->code,
+            productStock: $productDTO->stock,
+            productPrice: $productDTO->price,
             dateAdded: new \DateTimeImmutable(),
             dateDiscontinued: $productDTO->discontinuedAt,
         );

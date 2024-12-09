@@ -24,18 +24,38 @@ it('reads a valid CSV file', function () {
 
     $rows = iterator_to_array($generator);
 
-    expect($rows)->toHaveCount(2)
+    expect($rows)->toHaveCount(4)
         ->and($rows[0])->toMatchArray([
             'Product Code' => 'P0001',
             'Product Name' => 'TV',
             'Product Description' => '32” Tv',
+            'Stock' => '10',
+            'Cost in GBP' => '399.99',
             'Discontinued' => '',
         ])
         ->and($rows[1])->toMatchArray([
             'Product Code' => 'P0002',
             'Product Name' => 'Cd Player',
             'Product Description' => 'Nice CD player',
+            'Stock' => '11',
+            'Cost in GBP' => '50.12',
             'Discontinued' => 'yes',
+        ])
+        ->and($rows[2])->toMatchArray([
+            'Product Code' => 'P0011',
+            'Product Name' => 'Misc Cables',
+            'Product Description' => 'error in export',
+            'Stock' => '',
+            'Cost in GBP' => '',
+            'Discontinued' => '',
+        ])
+        ->and($rows[3])->toMatchArray([
+            'Product Code' => 'P0017',
+            'Product Name' => 'CPU',
+            'Product Description' => 'Processing power',
+            'Stock' => ' ideal for multimedia',
+            'Cost in GBP' => '4',
+            'Discontinued' => '4.22',
         ]);
 });
 
@@ -58,7 +78,7 @@ it('throws an exception for incorrect headers', function () {
     $this->csvReader->read($this->testFilePathInvalidHeader)->current();
 })->throws(
     RuntimeException::class,
-    'Unsupported header/s detected [Invalid Header1, Invalid Header2, Invalid Header3]. Supported: [Product Code, Product Name, Product Description, Discontinued]'
+    'Unsupported header/s detected [Invalid Header1, Invalid Header2, Invalid Header3]. Supported: [Product Code, Product Name, Product Description, Discontinued, Stock, Cost in GBP]'
 );
 
 it('throws an exception for invalid encoding', function () {

@@ -121,7 +121,7 @@ class ImportProductsFromCsvCommand extends Command
             ->setHeaders(['Element #', 'Error Message'])
             ->setRows(
                 array_map(
-                    fn (int $row, array $errors) => [$row, join(' ,', $errors)],
+                    fn (int $row, array $errors) => [$row, join(' ', $errors)],
                     array_keys($importResult->failed),
                     $importResult->failed
                 ),

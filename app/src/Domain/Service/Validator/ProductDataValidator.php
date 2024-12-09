@@ -27,6 +27,7 @@ class ProductDataValidator
         $errors = array_merge($errors, $this->validateProductName($data['Product Name']));
         $errors = array_merge($errors, $this->validateProductDescription($data['Product Description']));
         $errors = array_merge($errors, $this->validateDiscontinued($data['Discontinued']));
+        $errors = array_merge($errors, $this->validateStockAndCost($data['Stock'], $data['Cost in GBP']));
 
         return $errors;
     }
@@ -75,7 +76,40 @@ class ProductDataValidator
     private function validateDiscontinued(?string $discontinued): array
     {
         return '' !== $discontinued && 'yes' !== $discontinued
-            ? ['The "Discontinued" field must be "yes" or empty.']
+            ? [sprintf('The "Discontinued" field must be "yes" or empty, "%s" given.', $discontinued)]
             : [];
+    }
+
+    /**
+     * @return array<int, string>
+     */
+    private function validateStockAndCost(?string $stock, ?string $cost): array
+    {
+        $errors = [];
+
+        if (!ctype_digit($stock)) {
+            $errors[] = sprintf('The "Stock" field must be a valid number, "%s" given.', $stock);
+        }
+
+        if (!is_numeric($cost)) {
+            $errors[] = sprintf('The "Cost" field must be a number, "%s" given.', $cost);
+        }
+
+        if (count($errors) > 0) {
+            return $errors;
+        }
+
+        $cost = (float) $cost;
+        $stock = (int) $stock;
+
+        if ($cost < 5 && $stock < 10) {
+            $errors[] = 'An item with cost under 5 GBP and less than 10 items is not allowed.';
+        }
+
+        if ($cost > 1000) {
+            $errors[] = 'An item  with cost over 1000 GBP is not allowed.';
+        }
+
+        return $errors;
     }
 }
