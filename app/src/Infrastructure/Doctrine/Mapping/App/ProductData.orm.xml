@@ -12,6 +12,8 @@
         <field name="productName" column="strProductName" length="50"/>
         <field name="productDescription" column="strProductDesc" length="255"/>
         <field name="productCode" column="strProductCode" length="10" unique="true"/>
+        <field name="productStock" column="intProductStock"  type="integer"/>
+        <embedded name="productPrice" class="Money\Money" use-column-prefix="false"/>
 
         <field name="dateAdded" column="dtmAdded" type="datetime_immutable"/>
         <field name="dateDiscontinued" column="dtmDiscontinued" type="datetime_immutable" nullable="true" />

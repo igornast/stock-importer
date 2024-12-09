@@ -37,6 +37,16 @@ Options
   * Product Description
   * Discontinued
 
+### File Format
+  File Encoding: UTF-8
+  Headers: The first row must contain the headers listed below:
+  * Product Code
+  * Product Name
+  * Product Description
+  * Stock
+  * Cost in GBP
+  * Discontinued
+
 ## Testing
 Run test suites and static analysis:
 ```shell
@@ -48,13 +58,17 @@ After the import process, invalid rows will be displayed in a table format with 
 
 Example:
 ```shell
-+-----------+------------ Invalid Rows ------------------------+
-| Element # | Error Message                                    |
-+-----------+--------------------------------------------------+
-| 16        | The "Product Code" field is already in use.      |
-| 18        | The "Discontinued" field must be "yes" or empty. |
-+-----------+--------------------------------------------------+
-
++-----------+------------------------------------------------------- Invalid Rows --------------------------------------------------------------------+
+| Element # | Error Message                                                                                                                           |
++-----------+-----------------------------------------------------------------------------------------------------------------------------------------+
+| 7         | The "Stock" field must be a valid number, "" given.                                                                                     |
+| 11        | The "Stock" field must be a valid number, "" given. The "Cost" field must be a number, "" given.                                        |
+| 15        | The "Cost" field must be a number, "$4.33" given.                                                                                       |
+| 16        | The "Product Code" field is already in use.                                                                                             |
+| 18        | The "Discontinued" field must be "yes" or empty, "4.22" given. The "Stock" field must be a valid number, " ideal for multimedia" given. |
+| 28        | An item  with cost over 1000 GBP is not allowed.                                                                                        |
+| 29        | An item  with cost over 1000 GBP is not allowed.                                                                                        |
++-----------+-----------------------------------------------------------------------------------------------------------------------------------------+
 ```
 
 ## Architecture Overview

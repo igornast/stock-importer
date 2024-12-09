@@ -13,9 +13,15 @@ doctrine:
         mappings:
             App:
                 type: xml
-                dir: '%kernel.project_dir%/src/Infrastructure/Doctrine/Mapping'
+                dir: '%kernel.project_dir%/src/Infrastructure/Doctrine/Mapping/App'
                 prefix: 'App\Infrastructure\Doctrine\Entity'
                 alias: App
+            Money:
+                is_bundle: false
+                type: xml
+                dir: "%kernel.project_dir%/src/Infrastructure/Doctrine/Mapping/Money"
+                prefix: 'Money'
+                alias: Money
 
 when@test:
     doctrine:

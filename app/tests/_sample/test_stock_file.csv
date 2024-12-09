@@ -1,3 +1,5 @@
-Product Code,Product Name,Product Description,Discontinued
-P0001,TV,32” Tv,
-P0002,Cd Player,Nice CD player,yes
+Product Code,Product Name,Product Description,Stock,Cost in GBP,Discontinued
+P0001,TV,32” Tv,10,399.99,
+P0002,Cd Player,Nice CD player,11,50.12,yes
+P0011,Misc Cables,error in export
+P0017,CPU,Processing power, ideal for multimedia,4,4.22,
