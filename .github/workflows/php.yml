@@ -32,3 +32,11 @@ jobs:
 
             - name: Run Tests
               run: composer run test --working-dir=app
+
+            - name: Upload Coverage to Codecov
+              uses: codecov/codecov-action@v5
+              with:
+                  files: app/clover.xml
+                  disable_search: 'true'
+              env:
+                CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}

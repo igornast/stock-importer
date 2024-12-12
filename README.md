@@ -1,7 +1,7 @@
 # Product Importer Project
 
 ![PHPStan](https://img.shields.io/badge/PHPStan-Level%206-brightgreen)
-![Tests](https://github.com/igornast/stock-importer/actions/workflows/tests.yml/badge.svg)
+![Tests Coverage](https://img.shields.io/codecov/c/github/igornast/stock-importer?flag=coverage)
 
 ## Project Overview
 This project implements a modular system for importing and validating product data from CSV files. 
