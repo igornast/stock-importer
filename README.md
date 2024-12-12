@@ -1,5 +1,8 @@
 # Product Importer Project
 
+![PHPStan](https://img.shields.io/badge/PHPStan-Level%206-brightgreen)
+![Tests](https://github.com/igornast/stock-importer/actions/workflows/tests.yml/badge.svg)
+
 ## Project Overview
 This project implements a modular system for importing and validating product data from CSV files. 
 The architecture follows the principles of Hexagonal Architecture (Ports and Adapters), ensuring clear separation of concerns, flexibility, and testability.
