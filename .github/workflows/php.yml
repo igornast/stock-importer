@@ -31,7 +31,7 @@ jobs:
               run: composer install --no-progress --optimize-autoloader --working-dir=app
 
             - name: Run Tests
-              run: composer run test --working-dir=app
+              run: composer run test-ci --working-dir=app
 
             - name: Upload Coverage to Codecov
               uses: codecov/codecov-action@v5
