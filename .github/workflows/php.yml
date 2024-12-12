@@ -24,7 +24,8 @@ jobs:
             - name: Setup PHP
               uses: shivammathur/setup-php@v2
               with:
-                  tools: composer
+                php-version: ${{ env.default-php-version }}
+                tools: composer
 
             - name: Install Dependencies
               run: composer install --no-progress --optimize-autoloader --working-dir=app
