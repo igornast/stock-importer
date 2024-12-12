@@ -30,4 +30,4 @@ jobs:
               run: composer install --no-progress --optimize-autoloader --working-dir=app
 
             - name: Run Tests
-              run: composer test
+              run: composer run test --working-dir=app
