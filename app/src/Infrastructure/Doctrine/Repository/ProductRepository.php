@@ -22,17 +22,17 @@ class ProductRepository extends ServiceEntityRepository implements ProductReposi
 
     public function upsert(ProductDTO $productDTO): void
     {
-        $productData = $this->findOneBy(['productCode' => $productDTO->code]);
+        $productData = $this->findOneBy(['code' => $productDTO->code]);
 
         if ($productData instanceof ProductData) {
             $productData
-                ->setProductName($productDTO->name)
-                ->setProductDescription($productDTO->description)
-                ->setProductPrice($productDTO->price)
-                ->setProductStock($productDTO->stock);
+                ->setName($productDTO->name)
+                ->setDescription($productDTO->description)
+                ->setPrice($productDTO->price)
+                ->setStock($productDTO->stock);
 
-            if (null === $productData->dateDiscontinued && null !== $productDTO->discontinuedAt) {
-                $productData->setDateDiscontinued($productDTO->discontinuedAt);
+            if (null === $productData->discontinuedAt && null !== $productDTO->discontinuedAt) {
+                $productData->setDiscontinuedAt($productDTO->discontinuedAt);
             }
 
             $this->getEntityManager()->persist($productData);
@@ -41,13 +41,13 @@ class ProductRepository extends ServiceEntityRepository implements ProductReposi
         }
 
         $productData = new ProductData(
-            productName: $productDTO->name,
-            productDescription: $productDTO->description,
-            productCode: $productDTO->code,
-            productStock: $productDTO->stock,
-            productPrice: $productDTO->price,
-            dateAdded: new \DateTimeImmutable(),
-            dateDiscontinued: $productDTO->discontinuedAt,
+            name: $productDTO->name,
+            description: $productDTO->description,
+            code: $productDTO->code,
+            stock: $productDTO->stock,
+            price: $productDTO->price,
+            createdAt: new \DateTimeImmutable(),
+            discontinuedAt: $productDTO->discontinuedAt,
         );
 
         $this->getEntityManager()->persist($productData);

@@ -19,11 +19,21 @@ final class Version20241209152947 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        $this->addSql('ALTER TABLE tblProductData ADD intProductStock INT DEFAULT NULL, ADD intMoneyAmount INT DEFAULT NULL, ADD strMoneyCode VARCHAR(3) DEFAULT NULL');
+        $this->addSql(<<<SQL
+        ALTER TABLE product_data 
+            ADD stock INT DEFAULT NULL, 
+            ADD amount_in_cents INT DEFAULT NULL, 
+            ADD currency_code VARCHAR(3) DEFAULT NULL
+    SQL);
     }
 
     public function down(Schema $schema): void
     {
-        $this->addSql('ALTER TABLE tblProductData  DROP intProductStock, DROP intMoneyAmount, DROP strMoneyCode');
+        $this->addSql(<<<SQL
+        ALTER TABLE product_data 
+            DROP stock,
+            DROP amount_in_cents,
+            DROP currency_code
+    SQL);
     }
 }
