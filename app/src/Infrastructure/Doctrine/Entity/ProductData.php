@@ -9,48 +9,48 @@ use Money\Money;
 class ProductData
 {
     public function __construct(
-        public string $productName,
-        public string $productDescription,
-        public string $productCode,
-        public ?int $productDataId = null,
-        public ?int $productStock = null,
-        public ?Money $productPrice = null,
-        public ?\DateTimeImmutable $dateAdded = null,
-        public ?\DateTimeImmutable $dateDiscontinued = null,
+        public string $name,
+        public string $description,
+        public string $code,
+        public ?int $id = null,
+        public ?int $stock = null,
+        public ?Money $price = null,
+        public ?\DateTimeImmutable $createdAt = null,
+        public ?\DateTimeImmutable $discontinuedAt = null,
     ) {
     }
 
-    public function setProductName(string $productName): ProductData
+    public function setName(string $name): ProductData
     {
-        $this->productName = $productName;
+        $this->name = $name;
 
         return $this;
     }
 
-    public function setProductDescription(string $productDescription): ProductData
+    public function setDescription(string $description): ProductData
     {
-        $this->productDescription = $productDescription;
+        $this->description = $description;
 
         return $this;
     }
 
-    public function setDateDiscontinued(?\DateTimeImmutable $dateDiscontinued): ProductData
+    public function setDiscontinuedAt(?\DateTimeImmutable $discontinuedAt): ProductData
     {
-        $this->dateDiscontinued = $dateDiscontinued;
+        $this->discontinuedAt = $discontinuedAt;
 
         return $this;
     }
 
-    public function setProductStock(?int $productStock): ProductData
+    public function setStock(?int $stock): ProductData
     {
-        $this->productStock = $productStock;
+        $this->stock = $stock;
 
         return $this;
     }
 
-    public function setProductPrice(?Money $productPrice): ProductData
+    public function setPrice(?Money $price): ProductData
     {
-        $this->productPrice = $productPrice;
+        $this->price = $price;
 
         return $this;
     }

@@ -43,10 +43,10 @@ it('persists a new product data entity', function () {
 
     $this->entityManager->shouldReceive('persist')
         ->withArgs(function (ProductData $productData) use ($productDTO) {
-            return $productData->productCode === $productDTO->code
-                && $productData->productName === $productDTO->name
-                && $productData->productDescription === $productDTO->description
-                && $productData->dateDiscontinued === $productDTO->discontinuedAt
+            return $productData->code === $productDTO->code
+                && $productData->name === $productDTO->name
+                && $productData->description === $productDTO->description
+                && $productData->discontinuedAt === $productDTO->discontinuedAt
             ;
         })
         ->once();
@@ -56,7 +56,7 @@ it('persists a new product data entity', function () {
 
 it('persists an updated product data entity', function () {
     $productDTO = ProductDTOFixture::create();
-    $productData = ProductDataFixture::create(['dateDiscontinued' => null]);
+    $productData = ProductDataFixture::create(['discontinuedAt' => null]);
 
     $this->entityManager
         ->shouldReceive('getUnitOfWork->getEntityPersister->load')
@@ -65,9 +65,9 @@ it('persists an updated product data entity', function () {
 
     $this->entityManager->shouldReceive('persist')
         ->withArgs(function (ProductData $productData) use ($productDTO) {
-            return $productData->productName === $productDTO->name
-                && $productData->productDescription === $productDTO->description
-                && $productData->dateDiscontinued === $productDTO->discontinuedAt
+            return $productData->name === $productDTO->name
+                && $productData->description === $productDTO->description
+                && $productData->discontinuedAt === $productDTO->discontinuedAt
             ;
         })
         ->once();

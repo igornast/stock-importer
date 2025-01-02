@@ -3,19 +3,19 @@
                   xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
                           https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
 
-    <entity name="App\Infrastructure\Doctrine\Entity\ProductData" table="tblProductData">
+    <entity name="App\Infrastructure\Doctrine\Entity\ProductData" table="product_data">
 
-        <id name="productDataId" column="intProductDataId" type="integer" length="10">
+        <id name="id" column="id" type="integer" length="10">
             <generator strategy="AUTO"/>
         </id>
 
-        <field name="productName" column="strProductName" length="50"/>
-        <field name="productDescription" column="strProductDesc" length="255"/>
-        <field name="productCode" column="strProductCode" length="10" unique="true"/>
-        <field name="productStock" column="intProductStock"  type="integer"/>
-        <embedded name="productPrice" class="Money\Money" use-column-prefix="false"/>
+        <field name="name" column="name" length="50"/>
+        <field name="description" column="description" length="255"/>
+        <field name="code" column="code" length="10" unique="true"/>
+        <field name="stock" column="stock"  type="integer"/>
+        <embedded name="price" class="Money\Money" use-column-prefix="false"/>
 
-        <field name="dateAdded" column="dtmAdded" type="datetime_immutable"/>
-        <field name="dateDiscontinued" column="dtmDiscontinued" type="datetime_immutable" nullable="true" />
+        <field name="createdAt" column="created_at" type="datetime_immutable"/>
+        <field name="discontinuedAt" column="discontinued_at" type="datetime_immutable" nullable="true" />
     </entity>
 </doctrine-mapping>

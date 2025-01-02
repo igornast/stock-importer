@@ -18,12 +18,12 @@ class ProductDataFixture
     public static function definition(): array
     {
         return [
-            'productName' => fake()->word(),
-            'productDescription' => fake()->sentence(),
-            'productCode' => fake()->word(),
-            'productDataId' => fake()->numberBetween(1, 100),
-            'dateAdded' => new \DateTimeImmutable(),
-            'dateDiscontinued' => new \DateTimeImmutable(),
+            'name' => fake()->word(),
+            'description' => fake()->sentence(),
+            'code' => fake()->word(),
+            'id' => fake()->numberBetween(1, 100),
+            'createdAt' => new \DateTimeImmutable(),
+            'discontinuedAt' => new \DateTimeImmutable(),
         ];
     }
 }
